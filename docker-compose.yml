@@ -1,0 +1,75 @@
+version: '3'
+
+networks: 
+  frontend:
+    driver: bridge
+  backend:
+    driver: bridge
+
+volumes: 
+  mysql: 
+    driver: local
+  mongo:
+    driver: local
+  redis:
+    driver: local
+
+services: 
+  php:
+    build: ./php
+    volumes: 
+      - ${WORKER_DIR}:/var/www
+    ports: 
+      - 9100:9000
+    depends_on: 
+      - mysql
+      - redis
+      - mongo
+    networks: 
+      - backend
+
+  nginx:
+    build: ./nginx
+    volumes: 
+      - ${WORKER_DIR}:/var/www
+      - ./logs/nginx:/var/log/nginx
+      - ./nginx/conf.d:/etc/nginx/conf.d
+    ports: 
+      - 8000:80
+    depends_on: 
+      - php
+    networks: 
+      - frontend
+      - backend
+
+  mysql:
+    build: ./mysql
+    environment: 
+      - MYSQL_ROOT_PASSWORD=root
+    volumes: 
+      - ${DATA_PATH}/mysql:/var/lib/mysql
+    ports: 
+      - 3310:3306
+    networks: 
+      - backend
+  
+  mongo:
+    build: ./mongo
+    environment: 
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+    ports: 
+      - 27010:27017
+    volumes: 
+      - ${DATA_PATH}/mongo:/data/db
+    networks: 
+      - backend
+  
+  redis:
+    build: ./redis
+    volumes: 
+      - ${DATA_PATH}/redis:/data
+    ports: 
+      - 6310:6379
+    networks: 
+      - backend
