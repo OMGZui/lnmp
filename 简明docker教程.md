@@ -17,7 +17,7 @@
 
 有收获的话请**加颗小星星**，没有收获的话可以 **反对** **没有帮助** **举报**三连
 
-- [代码仓库](https://github.com/OMGZui/docker-php)
+- [代码仓库](https://github.com/OMGZui/lnmp)
 - [简明docker教程](http://moll.omgzui.top/article/8)
 
 ## 一、什么是docker
