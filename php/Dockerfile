@@ -4,7 +4,7 @@ FROM php:7.2-fpm
 RUN mv /etc/apt/sources.list /etc/apt/sources.list.bak
 ADD sources.list /etc/apt/sources.list
 RUN apt-get update && \
-        pecl channel-update pecl.php.net
+        pecl channel-update https://pecl.php.net/channel.xml
 
 # phpredis
 COPY redis-4.2.0.tgz /home
