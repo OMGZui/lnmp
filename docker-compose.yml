@@ -25,6 +25,7 @@ services:
       - mysql
       - redis
       - mongo
+      - nginx
     networks: 
       - backend
 
@@ -36,8 +37,6 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d
     ports: 
       - 8000:80
-    depends_on: 
-      - php
     networks: 
       - frontend
       - backend
@@ -45,7 +44,7 @@ services:
   mysql:
     build: ./mysql
     environment: 
-      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
     volumes: 
       - ${DATA_PATH}/mysql:/var/lib/mysql
     ports: 
@@ -56,8 +55,8 @@ services:
   mongo:
     build: ./mongo
     environment: 
-      - MONGO_INITDB_ROOT_USERNAME=root
-      - MONGO_INITDB_ROOT_PASSWORD=root
+      - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
     ports: 
       - 27010:27017
     volumes: 
@@ -70,6 +69,6 @@ services:
     volumes: 
       - ${DATA_PATH}/redis:/data
     ports: 
-      - 6310:6379
+      - 6370:6379
     networks: 
       - backend

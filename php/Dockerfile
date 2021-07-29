@@ -1,22 +1,17 @@
-FROM php:7.2-fpm
+FROM php:7.4-fpm
 
 # 添加源
-RUN mv /etc/apt/sources.list /etc/apt/sources.list.bak
-ADD sources.list /etc/apt/sources.list
+RUN sed -i 's/deb.debian.org/mirrors.aliyun.com/' /etc/apt/sources.list && \
+    sed -i 's/security.debian.org/mirrors.aliyun.com/' /etc/apt/sources.list && \
+    sed -i 's/security-cdn.debian.org/mirrors.aliyun.com/' /etc/apt/sources.list
 RUN apt-get update && \
-        pecl channel-update https://pecl.php.net/channel.xml
+        pecl channel-update pecl.php.net
 
 # phpredis
 COPY redis-4.2.0.tgz /home
 RUN pecl install /home/redis-4.2.0.tgz && \
     docker-php-ext-enable redis && \
     rm /home/redis-4.2.0.tgz
-
-# swoole
-COPY swoole-4.2.10.tgz /home
-RUN pecl install /home/swoole-4.2.10.tgz && \
-    docker-php-ext-enable swoole && \
-    rm /home/swoole-4.2.10.tgz
 
 # mongodb
 COPY mongodb-1.5.3.tgz /home
