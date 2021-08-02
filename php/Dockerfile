@@ -23,6 +23,10 @@ RUN pecl install /home/mongodb-1.5.3.tgz && \
 RUN docker-php-ext-install opcache
 COPY opcache.ini /usr/local/etc/php/conf.d/opcache.ini
 
+# pdo
+RUN docker-php-ext-install mysqli pdo pdo_mysql
+
+
 # php配置文件
 ADD php.ini    /usr/local/etc/php/php.ini
 
