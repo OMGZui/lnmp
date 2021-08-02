@@ -19,8 +19,6 @@ services:
     build: ./php
     volumes: 
       - ${WORKER_DIR}:/var/www
-    ports: 
-      - 9100:9000
     depends_on: 
       - mysql
       - redis
@@ -36,7 +34,11 @@ services:
       - ./logs/nginx:/var/log/nginx
       - ./nginx/conf.d:/etc/nginx/conf.d
     ports: 
-      - 8000:80
+      - 8000:8000
+      - 8002:8002
+      - 8003:8003
+      - 8004:8004
+      - 8005:8005
     networks: 
       - frontend
       - backend
